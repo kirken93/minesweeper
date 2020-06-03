@@ -1,9 +1,10 @@
 import SquareModel from "./SquareModel";
 
 class BoardModel {
-  constructor(height, width) {
+  constructor(height, width, numBombs) {
     this.height = height;
     this.width = width;
+    this.numBombs = numBombs;
 
     let squares = [];
     for (var x = 0; x < height; x++) {

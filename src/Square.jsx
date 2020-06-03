@@ -7,17 +7,28 @@ const Square = (props) => {
 
   const [isClicked, setIsClicked] = useState(false);
 
-  const content = props.square.isBomb
+  let content = null;
+  if (isClicked || props.isGameOver) {
+    content = props.square.isBomb
     ? "💣"
-    : "?";
+    : "🚩";
+  }
 
-  return <div className="square">
+  const click = () => {
+    setIsClicked(true);
+    props.onClick();
+  };
+
+  return <div className="square"
+              onClick={click}>
     {content}
   </div>;
 };
 
 Square.propTypes = {
-  square: PropTypes.instanceOf(SquareModel).isRequired
+  square: PropTypes.instanceOf(SquareModel).isRequired,
+  isGameOver: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired
 };
 
 export default Square;
