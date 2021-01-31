@@ -12,8 +12,20 @@ const Board = (props) => {
     setTime(0);
   };
 
+  const newGame = () => {
+    props.newGame();
+    reset();
+  };
+
   React.useEffect(() => {
-    if (board.getIsGameOver() && board.squares.flatMap(row => row).every(s => !s.isExposed))
+    const squares = board.squares.flatMap(row => row);
+
+    // Game hasn't started yet
+    if (squares.every(s => !s.isExposed))
+      return;
+
+    // Game has ended
+    if (board.getIsGameOver() && squares.every(s => s.isExposed))
       return;
 
     const intervalId = setInterval(() => {
@@ -22,7 +34,7 @@ const Board = (props) => {
 
     // clear interval on re-render to avoid memory leaks
     return () => clearInterval(intervalId);
-  }, [time]);
+  }, [time, props.board]);
 
   const status = board.getGameStatus();
   let statusRow = null;
@@ -38,7 +50,7 @@ const Board = (props) => {
     <div className="row">
       <div>{board.getBombsRemaining()}</div>
       <div>
-        <button type="button" onClick={props.newGame}>
+        <button type="button" onClick={newGame}>
           😊
         </button>
       </div>
