@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useReducer } from "react";
+import { useState } from "react";
 import './App.css';
 import BoardModel from "./BoardModel.js";
 import Board from "./Board.jsx";

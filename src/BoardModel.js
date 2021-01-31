@@ -78,7 +78,7 @@ class BoardModel extends BoardRecord {
       newSquares = newSquares.setIn([square.x, square.y], newSquare);
       if (newSquare.data === 0) {
         const neighbors = SquareModel.getNeighbors(newSquares, newSquare);
-        neighbors.map(neighbor => {
+        neighbors.forEach(neighbor => {
           newSquares = BoardModel.reveal(newSquares, neighbor);
         })
       }

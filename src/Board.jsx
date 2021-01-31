@@ -34,7 +34,7 @@ const Board = (props) => {
 
     // clear interval on re-render to avoid memory leaks
     return () => clearInterval(intervalId);
-  }, [time, props.board]);
+  }, [time, board]);
 
   const status = board.getGameStatus();
   let statusRow = null;
@@ -51,7 +51,7 @@ const Board = (props) => {
       <div>{board.getBombsRemaining()}</div>
       <div>
         <button type="button" onClick={newGame}>
-          😊
+          <span role="img" aria-label="New Game">😊</span>
         </button>
       </div>
       <div>{time}</div>
