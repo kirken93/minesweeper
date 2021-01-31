@@ -1,34 +1,41 @@
 import React from 'react';
-import {useState} from 'react';
 import PropTypes from 'prop-types';
 import SquareModel from "./SquareModel";
 
 const Square = (props) => {
-
-  const [isClicked, setIsClicked] = useState(false);
-
-  let content = null;
-  if (isClicked || props.isGameOver) {
-    content = props.square.isBomb
-    ? "💣"
-    : "🚩";
-  }
-
-  const click = () => {
-    setIsClicked(true);
-    props.onClick();
+  const handleContextMenu = (event) => {
+    if (!props.square.isExposed) {
+      event.preventDefault();
+      props.flag();
+    }
   };
 
-  return <div className="square"
-              onClick={click}>
+  const { square } = props;
+
+  let content = null;
+  let className = "square" + (square.className ? ` ${square.className}` : "");
+  if (square.isExposed) {
+    className += " exposed";
+    if (square.isBomb) {
+      content = "💣";
+    } else if (!!square.data) {
+      content = square.data;
+    }
+  } else if (square.isFlagged) {
+    content = "🚩";
+  }
+
+  return <div className={className}
+              onClick={props.onClick}
+              onContextMenu={handleContextMenu}>
     {content}
   </div>;
 };
 
 Square.propTypes = {
   square: PropTypes.instanceOf(SquareModel).isRequired,
-  isGameOver: PropTypes.bool.isRequired,
-  onClick: PropTypes.func.isRequired
+  onClick: PropTypes.func.isRequired,
+  flag: PropTypes.func.isRequired
 };
 
 export default Square;
