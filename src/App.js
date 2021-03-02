@@ -5,23 +5,14 @@ import BoardModel from "./models/BoardModel.js";
 import Board from "./components/Board.jsx";
 import TextField from "./components/TextField"
 
-const createNewBoard = (height, width, numBombs) => {
-  if (height * width < numBombs) {
-    alert("Cannot have more mines than squares");
-    return null;
-  }
-
-  return new BoardModel({ height, width, numBombs });
-};
-
 function App() {
   const [height, setHeight] = useState(10);
   const [width, setWidth] = useState(10);
   const [numBombs, setNumBombs] = useState(10);
 
-  const [board, setBoard] = useState(createNewBoard(height, width, numBombs));
+  const [board, setBoard] = useState(BoardModel.create(height, width, numBombs));
   const newGame = () => {
-    setBoard(createNewBoard(height, width, numBombs));
+    setBoard(BoardModel.create(height, width, numBombs));
   };
 
   return (

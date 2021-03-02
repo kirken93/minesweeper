@@ -68,6 +68,25 @@ class BoardModel extends BoardRecord {
     return newSquares;
   }
 
+  static create(height, width, numBombs) {
+    if ((!height || !width || !numBombs) || (height < 0 || width < 0 || numBombs < 0)) {
+      console.error("Invalid board");
+      return null;
+    }
+
+    if (height * width < numBombs) {
+      console.error("Cannot have more mines than squares");
+      return null;
+    }
+
+    if (height * width >= 1000000) {
+      console.error("Board is too large")
+      return null;
+    }
+
+    return new BoardModel({ height, width, numBombs });
+  }
+
   static reveal(squares, square) {
     let newSquares = squares;
 
