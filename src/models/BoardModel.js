@@ -1,6 +1,5 @@
 import SquareModel from "./SquareModel";
 import { Record, List } from "immutable";
-import { Simulate } from "react-dom/test-utils";
 
 const getRandomNum = (max, min = 0) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -18,10 +17,10 @@ class BoardModel extends BoardRecord {
 
     // Create all the squares for the board
     let squares = List();
-    for (var x = 0; x < props.height; x++) {
-      squares = squares.set(x, List());
-      for (var y = 0; y < props.width; y++) {
-        squares = squares.setIn([x, y], new SquareModel({ x, y }));
+    for (var i = 0; i < props.height; i++) {
+      squares = squares.set(i, List());
+      for (var j = 0; j < props.width; j++) {
+        squares = squares.setIn([i, j], new SquareModel({ x: i, y: j }));
       }
     }
 
