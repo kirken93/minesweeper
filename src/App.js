@@ -1,9 +1,9 @@
 import React from 'react';
 import { useState } from "react";
-import './App.css';
-import BoardModel from "./BoardModel.js";
-import Board from "./Board.jsx";
-import TextField from "./TextField"
+import './styles//App.css';
+import BoardModel from "./models/BoardModel.js";
+import Board from "./components/Board.jsx";
+import TextField from "./components/TextField"
 
 const createNewBoard = (height, width, numBombs) => {
   if (height * width < numBombs) {

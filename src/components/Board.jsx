@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import BoardModel from "./BoardModel";
+import BoardModel from "../models/BoardModel";
 import Square from "./Square.jsx";
 
 const Board = (props) => {

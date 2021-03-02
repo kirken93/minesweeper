@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SquareModel from "./SquareModel";
+import SquareModel from "../models/SquareModel";
 
 const Square = (props) => {
   const handleContextMenu = (event) => {
