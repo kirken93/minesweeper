@@ -20,7 +20,7 @@ class BoardModel extends BoardRecord {
     for (var i = 0; i < props.height; i++) {
       squares = squares.set(i, List());
       for (var j = 0; j < props.width; j++) {
-        squares = squares.setIn([i, j], new SquareModel({ x: i, y: j }));
+        squares = squares.setIn([i, j], SquareModel.create(i, j));
       }
     }
 
@@ -31,7 +31,7 @@ class BoardModel extends BoardRecord {
       var y = getRandomNum(props.width - 1);
 
       if (!squares.getIn([x, y]).isBomb) {
-        squares = squares.setIn([x,y], new SquareModel({ x, y, isBomb: true }));
+        squares = squares.setIn([x,y], SquareModel.create(x, y, true));
         minesSet++;
       }
     }
@@ -59,6 +59,15 @@ class BoardModel extends BoardRecord {
     return this.getGameStatus() !== null;
   }
 
+  static create(height, width, numBombs) {
+    if ((!height || !width || !numBombs) || (height < 0 || width < 0 || numBombs < 0)
+      || height * width < numBombs || height * width >= 1000000) {
+      return null;
+    }
+
+    return new BoardModel({ height, width, numBombs });
+  }
+
   static revealAll(squares) {
     let newSquares = squares;
 
@@ -66,25 +75,6 @@ class BoardModel extends BoardRecord {
       newSquares = BoardModel.reveal(newSquares, s);
     });
     return newSquares;
-  }
-
-  static create(height, width, numBombs) {
-    if ((!height || !width || !numBombs) || (height < 0 || width < 0 || numBombs < 0)) {
-      console.error("Invalid board");
-      return null;
-    }
-
-    if (height * width < numBombs) {
-      console.error("Cannot have more mines than squares");
-      return null;
-    }
-
-    if (height * width >= 1000000) {
-      console.error("Board is too large")
-      return null;
-    }
-
-    return new BoardModel({ height, width, numBombs });
   }
 
   static reveal(squares, square) {
