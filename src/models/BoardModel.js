@@ -45,11 +45,13 @@ class BoardModel extends BoardRecord {
 
   getGameStatus() {
     const squares = this.squares.flatMap(row => row);
-    const bombs = squares.filter(s => s.isBomb);
-    if (bombs.every(b => b.isFlagged) && squares.every(s => s.isExposed)) {
-      return "You win!";
-    } else if (bombs.some(b => b.isExposed)) {
-      return "You lose :(";
+    if (squares.every(s => s.isExposed)) {
+      const bombs = squares.filter(s => s.isBomb);
+      if (bombs.every(b => b.isFlagged)) {
+        return "You win!";
+      } else if (bombs.some(b => b.isExposed)) {
+        return "You lose :(";
+      }
     }
     return null;
   }

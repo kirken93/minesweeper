@@ -25,7 +25,7 @@ const Board = (props) => {
       return;
 
     // Game has ended
-    if (board.getIsGameOver() && squares.every(s => s.isExposed))
+    if (board.getIsGameOver())
       return;
 
     const intervalId = setInterval(() => {
