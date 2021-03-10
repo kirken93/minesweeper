@@ -40,11 +40,11 @@ class BoardModel extends BoardRecord {
   }
 
   getBombsRemaining() {
-    return this.squares.flatMap(row => row).count(s => s.isBomb && !s.isFlagged);
+    return this.squares.flatten().count(s => s.isBomb && !s.isFlagged);
   }
 
   getGameStatus() {
-    const squares = this.squares.flatMap(row => row);
+    const squares = this.squares.flatten();
     if (squares.every(s => s.isExposed)) {
       const bombs = squares.filter(s => s.isBomb);
       if (bombs.every(b => b.isFlagged)) {
@@ -60,27 +60,44 @@ class BoardModel extends BoardRecord {
     return this.getGameStatus() !== null;
   }
 
-  clickSquare(square) {
-    if (square.isExposed)
-      return this;
-
-    if (square.isBomb) {
-      return this.set("squares", BoardModel.revealAll(this.squares));
-    } else {
-      return this.set("squares", BoardModel.reveal(this.squares, square));
-    }
-  }
-
   flagSquare(square) {
     if (square.isExposed)
       return this;
 
     let newBoard = this.set("squares", this.squares.setIn([square.x, square.y], square.toggleFlag()));
-    if (newBoard.squares.flatMap(r => r).filter(s => s.isBomb).every(b => b.isFlagged)) {
-      newBoard = this.set("squares", BoardModel.revealAll(newBoard.squares));
+    if (newBoard.squares.flatten().filter(s => s.isBomb).every(b => b.isFlagged)) {
+      newBoard.squares.flatten().forEach(s => {
+        newBoard = newBoard.revealSquare(s);
+      });
     }
 
     return newBoard;
+  }
+
+  revealSquare(square) {
+    if (square.isExposed) {
+      return this;
+    } else {
+      // expose the square
+      const newSquare = square.expose(this.squares);
+      let newBoard = this.set("squares", this.squares.setIn([square.x, square.y], newSquare));
+      if (newSquare.data === 0) {
+        // reveal all neighbors
+        newSquare.getNeighbors(newBoard).forEach(neighbor => {
+          newBoard = newBoard.revealSquare(neighbor);
+        });
+      }
+
+      // game ending condition where all squares are revealed
+      const bombs = newBoard.squares.flatten().filter(s => s.isBomb);
+      if (bombs.some(b => b.isExposed) || bombs.every(b => b.isFlagged)) {
+        newBoard.squares.flatten().filter(s => !s.isFlagged).forEach(s => {
+          newBoard = newBoard.revealSquare(s);
+        })
+      }
+
+      return newBoard;
+    }
   }
 
   static create(height, width, numBombs) {
@@ -90,41 +107,6 @@ class BoardModel extends BoardRecord {
     }
 
     return new BoardModel({ height, width, numBombs });
-  }
-
-  static revealAll(squares) {
-    let newSquares = squares;
-
-    squares.flatMap(row => row).filter(s => !s.isExposed).forEach(s => {
-      newSquares = BoardModel.reveal(newSquares, s);
-    });
-    return newSquares;
-  }
-
-  static reveal(squares, square) {
-    let newSquares = squares;
-
-    // set data for this square
-    if (!square.isExposed) {
-      const newSquare = square.expose(newSquares);
-      newSquares = newSquares.setIn([square.x, square.y], newSquare);
-      if (newSquare.data === 0) {
-        const neighbors = SquareModel.getNeighbors(newSquares, newSquare);
-        neighbors.forEach(neighbor => {
-          newSquares = BoardModel.reveal(newSquares, neighbor);
-        })
-      }
-    }
-
-    const bombs = newSquares.flatMap(row => row).filter(s => s.isBomb);
-    if (bombs.some(b => b.isExposed)) {
-      return BoardModel.revealAll(newSquares);
-
-    } else if (bombs.every(b => b.isFlagged)) {
-      return BoardModel.revealAll(newSquares);
-    }
-
-    return newSquares;
   }
 }
 

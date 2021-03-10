@@ -64,7 +64,7 @@ const Board = (props) => {
       {row.map((square, s) => (
         <Square key={s}
                 square={square}
-                onClick={() => props.setBoard(board.clickSquare(square))}
+                onClick={() => props.setBoard(board.revealSquare(square))}
                 flag={() => props.setBoard(board.flagSquare(square))} />
       ))}
     </div>

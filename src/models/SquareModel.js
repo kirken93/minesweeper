@@ -36,15 +36,15 @@ class SquareModel extends SquareRecord {
     return this.set("isFlagged", !this.isFlagged);
   }
 
+  getNeighbors(board) {
+    return getSurroundingSquares(board.squares, this);
+  }
+
   static create(x, y, isBomb = false) {
     if (x === null || x < 0 || y === null || y < 0)
       return null;
 
     return new SquareModel({ x, y, isBomb });
-  }
-
-  static getNeighbors(squares, square) {
-    return getSurroundingSquares(squares, square);
   }
 }
 
