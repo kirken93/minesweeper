@@ -43,7 +43,7 @@ const Board = (props) => {
       <div>
         {status}
       </div>
-    </div>
+    </div>;
   }
 
   const header = <div className="header">
@@ -57,38 +57,18 @@ const Board = (props) => {
       <div>{time}</div>
     </div>
     {statusRow}
-  </div>
+  </div>;
 
-  const rows = board.squares.map((row, r) => {
-    const rowSquares = row.map((square, s) => {
-      const clickSquare = () => {
-        if (square.isExposed)
-          return;
-        
-        let newBoard = board;
-        if (square.isBomb) {
-          newBoard = newBoard.set("squares", BoardModel.revealAll(newBoard.squares));
-        } else {
-          newBoard = newBoard.set("squares", BoardModel.reveal(newBoard.squares, square));
-        }
-        props.setBoard(newBoard);
-      };
-
-      const flagSquare = () => {
-        if (square.isExposed)
-          return;
-        
-        const squares = board.squares.setIn([square.x, square.y], square.toggleFlag());
-        props.setBoard(board.set('squares', squares));
-      };
-
-      return <Square key={s}
-                     square={square}
-                     onClick={clickSquare}
-                     flag={flagSquare} />;
-    });
-    return <div key={r} className="row">{rowSquares}</div>;
-  });
+  const rows = board.squares.map((row, r) => (
+    <div key={r} className="row">
+      {row.map((square, s) => (
+        <Square key={s}
+                square={square}
+                onClick={() => props.setBoard(board.clickSquare(square))}
+                flag={() => props.setBoard(board.flagSquare(square))} />
+      ))}
+    </div>
+  ));
 
   return <div className="board">
     {header}

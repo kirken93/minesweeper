@@ -44,19 +44,41 @@ class BoardModel extends BoardRecord {
   }
 
   getGameStatus() {
-    const bombs = this.squares.flatMap(row => row).filter(s => s.isBomb);
-    if (bombs.some(b => b.isExposed)) {
-      return "You lose :(";
-    } else if (bombs.every(b => b.isFlagged)) {
-      // TODO in this case, need to expose every square
+    const squares = this.squares.flatMap(row => row);
+    const bombs = squares.filter(s => s.isBomb);
+    if (bombs.every(b => b.isFlagged) && squares.every(s => s.isExposed)) {
       return "You win!";
+    } else if (bombs.some(b => b.isExposed)) {
+      return "You lose :(";
     }
-
     return null;
   }
 
   getIsGameOver() {
     return this.getGameStatus() !== null;
+  }
+
+  clickSquare(square) {
+    if (square.isExposed)
+      return this;
+
+    if (square.isBomb) {
+      return this.set("squares", BoardModel.revealAll(this.squares));
+    } else {
+      return this.set("squares", BoardModel.reveal(this.squares, square));
+    }
+  }
+
+  flagSquare(square) {
+    if (square.isExposed)
+      return this;
+
+    let newBoard = this.set("squares", this.squares.setIn([square.x, square.y], square.toggleFlag()));
+    if (newBoard.squares.flatMap(r => r).filter(s => s.isBomb).every(b => b.isFlagged)) {
+      newBoard = this.set("squares", BoardModel.revealAll(newBoard.squares));
+    }
+
+    return newBoard;
   }
 
   static create(height, width, numBombs) {
