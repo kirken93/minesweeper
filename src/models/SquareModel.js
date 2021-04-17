@@ -9,6 +9,8 @@ const getColorClass = (bombCount) => {
     return "red";
   if (bombCount === 4)
     return "darkblue";
+
+  return "";
 };
 
 const SquareRecord = Record({
