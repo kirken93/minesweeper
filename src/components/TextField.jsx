@@ -6,7 +6,7 @@ const TextField = (props) => {
     props.onChange(event.target.value);
   };
 
-  return <div>
+  return <div className="text-field">
     <label htmlFor={props.id}>{props.label}</label>
     <input type="text"
            id={props.id}
