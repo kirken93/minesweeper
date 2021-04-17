@@ -1,8 +1,8 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/b7705ee7-62f9-4d62-9d5e-08ccc53807a5/deploy-status)](https://app.netlify.com/sites/vibrant-raman-6fa7fb/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/b7705ee7-62f9-4d62-9d5e-08ccc53807a5/deploy-status)](https://app.netlify.com/sites/megans-minesweeper/deploys)
 
 ## Minesweeper
 
-This is an implementation of Minesweeper using React that you can view [here](https://vibrant-raman-6fa7fb.netlify.app/).
+This is an implementation of Minesweeper using React that you can view [here](https://megans-minesweeper.netlify.app/).
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
