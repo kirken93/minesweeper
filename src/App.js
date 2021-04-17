@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from "react";
-import './styles//App.css';
+import './styles/App.scss';
 import BoardModel from "./models/BoardModel.js";
 import Board from "./components/Board.jsx";
 import TextField from "./components/TextField"
