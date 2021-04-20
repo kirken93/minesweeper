@@ -91,9 +91,9 @@ class BoardModel extends BoardRecord {
       // game ending condition where all squares are revealed
       const bombs = newBoard.squares.flatten().filter(s => s.isBomb);
       if (bombs.some(b => b.isExposed) || bombs.every(b => b.isFlagged)) {
-        newBoard.squares.flatten().filter(s => !s.isFlagged).forEach(s => {
+        newBoard.squares.flatten().forEach(s => {
           newBoard = newBoard.revealSquare(s);
-        })
+        });
       }
 
       return newBoard;
