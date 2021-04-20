@@ -34,8 +34,8 @@ const Square = (props) => {
 
 Square.propTypes = {
   square: PropTypes.instanceOf(SquareModel).isRequired,
-  onClick: PropTypes.func.isRequired,
-  flag: PropTypes.func.isRequired
+  onClick: PropTypes.func,
+  flag: PropTypes.func
 };
 
 export default Square;

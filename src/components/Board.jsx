@@ -61,12 +61,18 @@ const Board = (props) => {
 
   const rows = board.squares.map((row, r) => (
     <div key={r} className="row">
-      {row.map((square, s) => (
-        <Square key={s}
+      {row.map((square, s) => {
+        const onClick = square.isFlagged
+          ? null
+          : () => props.setBoard(board.revealSquare(square));
+        const flag = square.isExposed
+          ? null
+          : () => props.setBoard(board.flagSquare(square));
+        return <Square key={s}
                 square={square}
-                onClick={() => props.setBoard(board.revealSquare(square))}
-                flag={() => props.setBoard(board.flagSquare(square))} />
-      ))}
+                onClick={onClick}
+                flag={flag} />
+      })}
     </div>
   ));
 
