@@ -1,8 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
 import SquareModel from "../models/SquareModel";
 
-const Square = (props) => {
+interface IProps {
+  square: SquareModel;
+  onClick: (() => void) | null;
+  flag: (() => void) | null;
+}
+
+const Square = (props: IProps) => {
   const handleContextMenu = (event) => {
     if (!props.square.isExposed) {
       event.preventDefault();
@@ -25,17 +30,15 @@ const Square = (props) => {
     content = "🚩";
   }
 
-  return <div className={className}
-              onClick={props.onClick}
-              onContextMenu={handleContextMenu}>
-    {content}
-  </div>;
-};
-
-Square.propTypes = {
-  square: PropTypes.instanceOf(SquareModel).isRequired,
-  onClick: PropTypes.func.isRequired,
-  flag: PropTypes.func.isRequired
+  return (
+    <div
+      className={className}
+      onClick={props.onClick}
+      onContextMenu={handleContextMenu}
+    >
+      {content}
+    </div>
+  );
 };
 
 export default Square;
